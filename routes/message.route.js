@@ -1,14 +1,14 @@
 var express = require('express');
 var router = express.Router();
-const followsController = require ('../controllers/follows.controller');
+const messageController = require ('../controllers/message.controller');
 /**
  * GET Route to find user by id
  */
-router.get('/:idFollows', followsController.findAllFollowers);
+router.get('/:idTransmitter/:idReceiver', messageController.findAllMessagesByIdTransmitterAndIdReceiver);
 /**
  * POST Route to create user
  */
-router.post ('/', followsController.createFollows);
+router.post ('/', messageController.createMessage);
 
 /**
  * TASK:

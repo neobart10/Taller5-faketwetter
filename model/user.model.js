@@ -1,5 +1,5 @@
 module.exports = (sequelize, Sequelize) =>{
-    const User = sequelize.define ("User", {
+    const User = sequelize.define("User", {
         idUser: {
             type: Sequelize.INTEGER,
             primaryKey: true,
@@ -9,6 +9,9 @@ module.exports = (sequelize, Sequelize) =>{
             type: Sequelize.STRING,
             unique: true
         },
+
+        pass: Sequelize.STRING,
+
         creation_date: Sequelize.DATE,
     }, {
         tableName: "users"
@@ -16,6 +19,4 @@ module.exports = (sequelize, Sequelize) =>{
     
     return User;
 }
-
-
 

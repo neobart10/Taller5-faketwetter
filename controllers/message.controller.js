@@ -1,10 +1,10 @@
 const dbManager = require('../database.config/database.manager');
 
 /**
- * Creation of an Follows
- * @param {*} newFollowsObject JSON Object with Follow information
+ * Creation of an Message
+ * @param {*} newMesageObject JSON Object with Follow information
  */
-async function createFollows(req, res) {
+async function createMessage(req, res) {
 
     // CHECK IF THE REQUEST BODY IS EMPTY
     if (!req.body) {
@@ -15,13 +15,14 @@ async function createFollows(req, res) {
     }
 
     // CREATING THE OBJECT TO PERSIST
-    const newFollowsObject = {
-        idUser: req.body.idUser,
-        idFollow: req.body.idFollow
+    const newMessageObject = {
+        idTransmitter: req.body.idTransmitter,
+        idReceiver: req.body.idReceiver,
+        text: req.body.text
     };
 
     // EXECUTING THE CREATE QUERY - INSERT THE OBJECT INTO DATABASE 
-    dbManager.Follows.create(newFollowsObject).then(
+    dbManager.Message.create(newMessageObject).then(
         data => {
             res.send(data);
         }
@@ -31,26 +32,26 @@ async function createFollows(req, res) {
             console.log(e);
             // Send error message as a response 
             res.status(500).send({
-                message: "error in create Follows"
+                message: "error in create Message"
             });
         }
     );
 }
 
 /**
- * GEt all Followers
+ * GEt all Messages by Transmiter and Receiver
  */
-async function findAllFollowers(req, res) {
+async function findAllMessagesByIdTransmitterAndIdReceiver(req, res) {
     try {
-        const {idFollow} = req.params;
+        const {idTransmitter, idReceiver} = req.params;
 
-        const followers = await dbManager.User.findAll(
-            {where: {idFollow: idFollow}}
+        const messages = await dbManager.Message.findAll(
+            {where: {idTransmitter: idTransmitter, idReceiver: idReceiver}}
         );
 
         //Send response
         res.json({
-            data: followers
+            data: messages
         });
 
     } catch (e) {
@@ -64,5 +65,5 @@ async function findAllFollowers(req, res) {
 }
 
 
-exports.createFollows = createFollows;
-exports.findAllFollowers = findAllFollowers;
+exports.createMessage = createMessage;
+exports.findAllMessagesByIdTransmitterAndIdReceiver = findAllMessagesByIdTransmitterAndIdReceiver;

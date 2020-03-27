@@ -8,7 +8,8 @@ var logger = require('morgan');
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users.route');
 var postsRouter = require('./routes/posts.route');
-
+var followsRouter = require('./routes/follows.route');
+var messageRouter = require('./routes/message.route');
 
 // IMPORT DB CONNECTION MANAGER
 const dbManager = require ("./database.config/database.manager");
@@ -25,6 +26,8 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
 app.use('/post', postsRouter);
+app.use('/follows', followsRouter);
+app.use('/message', messageRouter);
 
 
 /**
@@ -37,7 +40,6 @@ dbManager.sequelizeConnection.authenticate()
     dbManager.sequelizeConnection.sync().then(() => {
         console.log("Database Synced");
       });
-
   })
   .catch(err => {
     console.error('Unable to connect to the database:', err);
