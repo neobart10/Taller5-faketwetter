@@ -34,6 +34,7 @@ router.get('/ByCreatedDate/:creation_date', userController.findAllUsersByCreated
 /**
  * GET Route to login user
  */
+
 router.post('/login', userController.loginUser);
 
 

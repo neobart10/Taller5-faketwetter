@@ -4,7 +4,7 @@ const dbManager = require('../database.config/database.manager');
  * Creation of an user
  * @param {*} userObject JSON Object with User information
  */
-async function createUser(req, res) {
+function createUser(req, res) {
 
     // CHECK IF THE REQUEST BODY IS EMPTY
     if (!req.body) {
@@ -13,6 +13,8 @@ async function createUser(req, res) {
         });
         return;
     }
+
+
 
     // CREATING THE OBJECT TO PERSIST
     const newUserObject = {
@@ -23,11 +25,11 @@ async function createUser(req, res) {
 
     // EXECUTING THE CREATE QUERY - INSERT THE OBJECT INTO DATABASE 
     dbManager.User.create(newUserObject).then(
-        data => {
+        function(data) {
             res.send(data);
         }
     ).catch(
-        e => {
+        function(e) {
             // Print error on console
             console.log(e);
             // Send error message as a response 
@@ -47,6 +49,7 @@ async function findAllUsers(req, res) {
         const users = await dbManager.User.findAll();
 
         //Send response
+        //console.log(users);
         res.json({
             data: users
         });
@@ -100,6 +103,9 @@ async function updateUser(req, res) {
     }
 
     // EXECUTING THE Update QUERY - Update THE OBJECT INTO DATABASE
+    console.log(req.body.username);
+    console.log(req.body.pass);
+    console.log(req.params.idUser);
     dbManager.User.update(
         {username: req.body.username, pass: req.body.pass, creation_date: req.body.creation_date},
         {returning: true, where: {idUser: req.params.idUser}}
@@ -217,6 +223,8 @@ async function findAllUsersByCreatedDate(req, res) {
 
 async function loginUser(req, res) {
     try {
+        console.log('login');
+        console.log(req.body);
         const {username, pass} = req.body;
 
         //Execute query
@@ -229,8 +237,8 @@ async function loginUser(req, res) {
         console.log(user.username);
         console.log(user.pass);
         if(user.pass == pass){
-            res.send(true);
-        }else res.send(false);
+            res.send(user);
+        }else res.send(null);
 
         //res.json(user);
 

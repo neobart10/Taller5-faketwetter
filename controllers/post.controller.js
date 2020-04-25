@@ -4,7 +4,8 @@ const dbManager = require('../database.config/database.manager');
  * Creation of an post
  * @param {*} postObject JSON Object with User information
  */
-async function createPost(req, res) {
+
+function createPost(req, res) {
 
     // CHECK IF THE REQUEST BODY IS EMPTY
     if (!req.body) {

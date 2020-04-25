@@ -22,6 +22,38 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
+
+/*app.use( function(req, res, next)  {
+    res.header('Access-Control-Allow-Origin', '*');
+
+// authorized headers for preflight requests
+// https://developer.mozilla.org/en-US/docs/Glossary/preflight_request
+res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept');
+next();
+
+app.options('*', function(req, res) {
+    // allowed XHR methods
+    res.header('Access-Control-Allow-Methods', 'GET, PATCH, PUT, POST, DELETE, OPTIONS');
+res.send();
+});
+});*/
+
+app.use(function(req, res, next) {
+    res.header('Access-Control-Allow-Origin', '*');
+    res.header('Access-Control-Allow-Methods', 'GET, PUT, POST, DELETE, OPTIONS');
+    res.header('Access-Control-Allow-Headers', 'Content-Type, Authorization, Content-Length, X-Requested-With');
+
+    //intercepts OPTIONS method
+    if ('OPTIONS' === req.method) {
+        //respond with 200
+        res.sendStatus(200);
+    }
+    else {
+        //move on
+        next();
+    }
+});
+
 //Set the routing routes to the each script
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
@@ -46,3 +78,4 @@ dbManager.sequelizeConnection.authenticate()
   });
 
 module.exports = app;
+
